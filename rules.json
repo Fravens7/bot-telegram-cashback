@@ -1,14 +1,8 @@
 [
-  {
-    "game": "Slots",
-    "percentage": 0.08,
-    "max_cap": 100000,
-    "is_active": true
-  },
-  {
-    "game": "Sports",
-    "percentage": 0.0688,
-    "max_cap": 25000,
-    "is_active": true
-  }
+  { "value": "Chicken Dash", "label": "🐓 Chicken Dash" },
+  { "value": "Sports", "label": "🏈 Sports" },
+  { "value": "Slots", "label": "🎰 Slots" },
+  { "value": "Crash", "label": "🛩️ Crash" },
+  { "value": "Casino", "label": "💎 Casino" }
 ]
+
