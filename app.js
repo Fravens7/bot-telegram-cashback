@@ -1,26 +1,23 @@
-window.onload = async function () {
+window.onload = async function() {
     const webApp = window.Telegram.WebApp;
     webApp.expand();
 
     const promoListElement = document.getElementById('promo-list');
-    promoListElement.innerHTML = '<p>Cargando promociones...</p>';
-
-    const apiUrl = "https://divine-frost-e362.fraven-slazo.workers.dev/";
+    promoListElement.innerHTML = '<p>Cargando datos desde Supabase...</p>';
 
     try {
-        const response = await fetch(apiUrl);
+        const response = await fetch("https://divine-frost-e362.fraven-slazo.workers.dev/");
         const promociones = await response.json();
 
-        // Limpiamos la lista
-        promoListElement.innerHTML = '';
+        promoListElement.innerHTML = ''; // Limpiamos
 
-        // Recorremos los datos que vienen desde Supabase vía Worker
         promociones.forEach(promo => {
-            const porcentaje = promo.percentage !== null
-                ? (promo.percentage * 100).toFixed(2) + '%'
-                : 'Por niveles VIP';
-            
-            const tope = promo.max_cap !== null
+            // Mostrar "por niveles" si no hay porcentaje general
+            const porcentajeTexto = promo.percentage !== null 
+                ? `${(promo.percentage * 100).toFixed(2)}%`
+                : '📊 Por niveles VIP';
+
+            const topeTexto = promo.max_cap 
                 ? `${promo.max_cap.toLocaleString()} BDT`
                 : 'Ilimitado';
 
@@ -28,9 +25,9 @@ window.onload = async function () {
             promoDiv.className = 'promo-item';
 
             promoDiv.innerHTML = `
-                <h3>${promo.display_name || promo.game_name}</h3>
-                <p><strong>Porcentaje:</strong> ${porcentaje}</p>
-                <p><strong>Tope Máximo:</strong> ${tope}</p>
+                <h3>${promo.display_name}</h3>
+                <p><strong>Porcentaje:</strong> ${porcentajeTexto}</p>
+                <p><strong>Tope Máximo:</strong> ${topeTexto}</p>
                 <button>Editar</button>
             `;
 
@@ -38,7 +35,7 @@ window.onload = async function () {
         });
 
     } catch (error) {
-        console.error("Error al cargar promociones:", error);
         promoListElement.innerHTML = '<p>Error al cargar promociones.</p>';
+        console.error("Error al traer datos:", error);
     }
 };
