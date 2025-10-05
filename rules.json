@@ -3,5 +3,6 @@
   {"value":"Sports","label":"🏈 Sports"},
   {"value":"Slots","label":"🎰 Slots"},
   {"value":"Crash","label":"🛩️ Crash"},
-  {"value":"Casino","label":"💎 Casino"}
+  {"value":"Casino","label":"💎 Casino"},
+  {"value":"New Game","label":"🎮 New Game"}
 ]
