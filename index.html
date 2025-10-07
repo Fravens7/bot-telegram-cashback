@@ -1,138 +1,57 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Control</title>
-    <style>
-        /* Estilos globales */
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #6e7e9f, #536579);
-            color: #fff;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-        }
-        .container {
-            background-color: #1c1e2a;
-            padding: 30px;
-            border-radius: 15px;
-            width: 100%;
-            max-width: 800px;
-            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
-        }
-        h1 {
-            text-align: center;
-            color: #00c4cc;
-            font-size: 2.5rem;
-            margin-bottom: 30px;
-        }
-        .promo-item {
-            background: #2d3748;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
-        }
-        .promo-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0px 6px 25px rgba(0, 0, 0, 0.2);
-        }
-        .promo-item h3 {
-            margin: 0;
-            font-size: 1.8rem;
-            color: #00c4cc;
-        }
-        .promo-item p {
-            font-size: 1.1rem;
-            margin: 5px 0;
-        }
-        button {
-            background-color: #ff7b54;
-            color: #fff;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: background-color 0.3s ease;
-            margin-top: 10px;
-        }
-        button:hover {
-            background-color: #ff5f3a;
-        }
+window.onload = async function() {
+    const webApp = window.Telegram.WebApp;
+    webApp.expand();
 
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-content {
-            background-color: #2d3748;
-            padding: 20px;
-            border-radius: 10px;
-            width: 400px;
-            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
-        }
-        .modal-content input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-        .modal-content button {
-            width: 100%;
-            padding: 12px;
-            background-color: #00c4cc;
-            border-radius: 5px;
-            border: none;
-            font-size: 1rem;
-            cursor: pointer;
-        }
-        .modal-content button:hover {
-            background-color: #0088cc;
-        }
+    const promoListElement = document.getElementById('promo-list');
+    promoListElement.innerHTML = '<p>Cargando datos...</p>';
 
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>🛠️ Panel de Control de Cashback</h1>
-        <div id="promo-list" class="loading">
-            Cargando promociones...
-        </div>
-    </div>
+    // Datos ficticios de ejemplo (simulando lo que vendría de Supabase)
+    const promociones = [
+        {
+            display_name: "🎰 Slots Especial",
+            percentage: 0.15,
+            max_cap: 1000
+        },
+        {
+            display_name: "💎 Casino Premium",
+            percentage: null,
+            max_cap: 5000
+        },
+        {
+            display_name: "🛩️ Crash Rápido",
+            percentage: 0.20,
+            max_cap: null
+        },
+        {
+            display_name: "🏈 Sports Vip",
+            percentage: null,
+            max_cap: null
+        }
+    ];
 
-    <!-- Modal para editar -->
-    <div id="edit-modal" class="modal">
-        <div class="modal-content">
-            <h3>Editar Promoción</h3>
-            <label for="display-name">Nombre de Promoción:</label>
-            <input type="text" id="display-name" />
-            <label for="percentage">Porcentaje (%):</label>
-            <input type="number" id="percentage" step="0.01" />
-            <label for="max-cap">Tope Máximo (BDT):</label>
-            <input type="number" id="max-cap" />
-            <button id="save-button">Guardar Cambios</button>
-        </div>
-    </div>
+    promoListElement.innerHTML = ''; // Limpiamos el contenido
 
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="app.js"></script>
-</body>
-</html>
+    promociones.forEach(promo => {
+        // Mostrar "por niveles" si no hay porcentaje general
+        const porcentajeTexto = promo.percentage !== null 
+            ? `${(promo.percentage * 100).toFixed(2)}%`
+            : '📊 Por niveles VIP';
+
+        const topeTexto = promo.max_cap 
+            ? `${promo.max_cap.toLocaleString()} BDT`
+            : 'Ilimitado';
+
+        const promoDiv = document.createElement('div');
+        promoDiv.className = 'promo-item';
+
+        promoDiv.innerHTML = `
+            <h3>${promo.display_name}</h3>
+            <p><strong>Porcentaje:</strong> ${porcentajeTexto}</p>
+            <p><strong>Tope Máximo:</strong> ${topeTexto}</p>
+            <button>Editar</button>
+        `;
+
+        promoListElement.appendChild(promoDiv);
+    });
+
+};
