@@ -73,3 +73,5 @@ window.onload = async function() {
 
     } catch (error) {
         promoListElement.innerHTML =
+}
+};
