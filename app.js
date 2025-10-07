@@ -9,7 +9,12 @@ window.onload = async function() {
         const response = await fetch("https://divine-frost-e362.fraven-slazo.workers.dev/");
         const promociones = await response.json();
 
-        promoListElement.innerHTML = ''; // Limpiamos
+        promoListElement.innerHTML = ''; // Limpiamos el contenido
+
+        if (promociones.length === 0) {
+            promoListElement.innerHTML = '<p class="error-message">No se encontraron promociones disponibles.</p>';
+            return;
+        }
 
         promociones.forEach(promo => {
             // Mostrar "por niveles" si no hay porcentaje general
@@ -31,11 +36,17 @@ window.onload = async function() {
                 <button>Editar</button>
             `;
 
+            promoDiv.querySelector('button').addEventListener('click', () => {
+                alert(`Editar la promoción: ${promo.display_name}`);
+                // Aquí podrías implementar la lógica para editar la promoción (como abrir un modal o formulario)
+            });
+
             promoListElement.appendChild(promoDiv);
         });
 
     } catch (error) {
-        promoListElement.innerHTML = '<p>Error al cargar promociones.</p>';
+        promoListElement.innerHTML = '<p class="error-message">Error al cargar promociones.</p>';
         console.error("Error al traer datos:", error);
     }
 };
+
