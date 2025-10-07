@@ -3,75 +3,55 @@ window.onload = async function() {
     webApp.expand();
 
     const promoListElement = document.getElementById('promo-list');
-    const editModal = document.getElementById('edit-modal');
-    const saveButton = document.getElementById('save-button');
-    const displayNameInput = document.getElementById('display-name');
-    const percentageInput = document.getElementById('percentage');
-    const maxCapInput = document.getElementById('max-cap');
-
     promoListElement.innerHTML = '<p>Cargando datos...</p>';
 
-    try {
-        // Datos ficticios de promociones
-        const promociones = [
-            { display_name: 'Promoción 1', percentage: 0.10, max_cap: 1000 },
-            { display_name: 'Promoción 2', percentage: 0.20, max_cap: 1500 },
-        ];
+    // Datos ficticios de ejemplo (simulando lo que vendría de Supabase)
+    const promociones = [
+        {
+            display_name: "🎰 Slots Especial",
+            percentage: 0.15,
+            max_cap: 1000
+        },
+        {
+            display_name: "💎 Casino Premium",
+            percentage: null,
+            max_cap: 5000
+        },
+        {
+            display_name: "🛩️ Crash Rápido",
+            percentage: 0.20,
+            max_cap: null
+        },
+        {
+            display_name: "🏈 Sports Vip",
+            percentage: null,
+            max_cap: null
+        }
+    ];
 
-        promoListElement.innerHTML = ''; // Limpiamos
+    promoListElement.innerHTML = ''; // Limpiamos el contenido
 
-        promociones.forEach((promo, index) => {
-            // Crear el HTML de la promoción
-            const promoDiv = document.createElement('div');
-            promoDiv.className = 'promo-item';
+    promociones.forEach(promo => {
+        // Mostrar "por niveles" si no hay porcentaje general
+        const porcentajeTexto = promo.percentage !== null 
+            ? `${(promo.percentage * 100).toFixed(2)}%`
+            : '📊 Por niveles VIP';
 
-            promoDiv.innerHTML = `
-                <h3>${promo.display_name}</h3>
-                <p><strong>Porcentaje:</strong> ${(promo.percentage * 100).toFixed(2)}%</p>
-                <p><strong>Tope Máximo:</strong> ${promo.max_cap.toLocaleString()} BDT</p>
-                <button onclick="editPromo(${index})">Editar</button>
-            `;
+        const topeTexto = promo.max_cap 
+            ? `${promo.max_cap.toLocaleString()} BDT`
+            : 'Ilimitado';
 
-            promoListElement.appendChild(promoDiv);
-        });
+        const promoDiv = document.createElement('div');
+        promoDiv.className = 'promo-item';
 
-        // Función para abrir el modal de edición
-        window.editPromo = function(index) {
-            const promo = promociones[index];
-            displayNameInput.value = promo.display_name;
-            percentageInput.value = promo.percentage * 100; // Convertir a porcentaje
-            maxCapInput.value = promo.max_cap;
+        promoDiv.innerHTML = `
+            <h3>${promo.display_name}</h3>
+            <p><strong>Porcentaje:</strong> ${porcentajeTexto}</p>
+            <p><strong>Tope Máximo:</strong> ${topeTexto}</p>
+            <button>Editar</button>
+        `;
 
-            // Mostrar el modal
-            editModal.style.display = 'flex';
+        promoListElement.appendChild(promoDiv);
+    });
 
-            // Guardar cambios
-            saveButton.onclick = function() {
-                promo.display_name = displayNameInput.value;
-                promo.percentage = parseFloat(percentageInput.value) / 100; // Convertir de vuelta a decimal
-                promo.max_cap = parseInt(maxCapInput.value);
-
-                // Actualizar la lista
-                promoListElement.innerHTML = ''; // Limpiar
-                promociones.forEach((promo, index) => {
-                    const promoDiv = document.createElement('div');
-                    promoDiv.className = 'promo-item';
-
-                    promoDiv.innerHTML = `
-                        <h3>${promo.display_name}</h3>
-                        <p><strong>Porcentaje:</strong> ${(promo.percentage * 100).toFixed(2)}%</p>
-                        <p><strong>Tope Máximo:</strong> ${promo.max_cap.toLocaleString()} BDT</p>
-                        <button onclick="editPromo(${index})">Editar</button>
-                    `;
-                    promoListElement.appendChild(promoDiv);
-                });
-
-                // Cerrar el modal
-                editModal.style.display = 'none';
-            };
-        };
-
-    } catch (error) {
-        promoListElement.innerHTML =
-}
 };
