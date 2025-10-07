@@ -5,7 +5,7 @@ window.onload = async function() {
     const promoListElement = document.getElementById('promo-list');
     promoListElement.innerHTML = '<p>Cargando datos...</p>';
 
-    // Datos ficticios de ejemplo
+    // Datos ficticios de ejemplo (simulando lo que vendría de Supabase)
     const promociones = [
         {
             display_name: "🎰 Slots Especial",
